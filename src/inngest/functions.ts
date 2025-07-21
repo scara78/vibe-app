@@ -56,11 +56,13 @@ export const helloWorld = inngest.createFunction(
                     buffers.stderr += data;
                   },
                 });
+
                 return result.stdout;
               } catch (e) {
-                console.log(
+                console.error(
                   `Command failed: ${e} \nstdout: ${buffers.stdout} \nstderr: ${buffers.stderr}`
                 );
+
                 return `Command failed: ${e} \nstdout: ${buffers.stdout} \nstderr: ${buffers.stderr}`;
               }
             });
@@ -99,7 +101,7 @@ export const helloWorld = inngest.createFunction(
                 }
               }
             );
-
+            // wait for the files to be an object and update the state
             if (typeof newFiles === "object") {
               network.state.data.files = newFiles;
             }
@@ -154,7 +156,7 @@ export const helloWorld = inngest.createFunction(
     const network = createNetwork({
       name: "coding-agent-network",
       agents: [codeAgent],
-      maxIter: 15,
+      maxIter: 10, // maximum number of iterations
       router: async ({ network }) => {
         const summary = network.state.data.summary;
 

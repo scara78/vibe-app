@@ -11,10 +11,11 @@ export async function getSandbox(sandboxId: string) {
 // If the message exists and has content, return the content as a string.
 // If the content is an array, join its elements into a single string.
 export function lastAssistantTextMessageContent(result: AgentResult) {
+  // extract the last message with the role "assistant"
   const lastAssistantTextMessageIndex = result.output.findLastIndex(
     (message) => message.role === "assistant"
   );
-
+  // extract the content of the last message
   const message = result.output[lastAssistantTextMessageIndex] as
     | TextMessage
     | undefined;
@@ -22,6 +23,6 @@ export function lastAssistantTextMessageContent(result: AgentResult) {
   return message?.content
     ? typeof message.content === "string"
       ? message.content
-      : message.content.map((content) => content.text).join("")
+      : message.content.map((c) => c.text).join("")
     : undefined;
 }
