@@ -24,6 +24,17 @@ export const ProjectView = ({ projectId }: Props) => {
   const [activeFragment, setActiveFragment] = useState<Fragment | null>(null);
   const [tabState, setTabState] = useState<"preview" | "code">("preview");
 
+  // Check if the files are a file collection
+  const isFileCollection = (
+    files: unknown
+  ): files is { [path: string]: string } => {
+    return (
+      typeof files === "object" &&
+      files !== null &&
+      Object.values(files).every((value) => typeof value === "string")
+    );
+  };
+
   return (
     <div className="h-screen">
       <ResizablePanelGroup direction="horizontal">
@@ -78,11 +89,12 @@ export const ProjectView = ({ projectId }: Props) => {
             </TabsContent>
 
             <TabsContent value="code" className="min-h-0">
-              {!!activeFragment?.files && (
-                <FileExplorer
-                  files={activeFragment.files as { [path: string]: string }}
-                />
-              )}
+              {!!activeFragment?.files &&
+                isFileCollection(activeFragment.files) && (
+                  <FileExplorer
+                    files={activeFragment.files as { [path: string]: string }}
+                  />
+                )}
             </TabsContent>
           </Tabs>
         </ResizablePanel>

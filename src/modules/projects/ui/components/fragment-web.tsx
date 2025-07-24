@@ -18,9 +18,15 @@ export const FragmentWeb = ({ data }: Props) => {
 
   // Copy the sandbox url
   const handleCopy = () => {
-    navigator.clipboard.writeText(data.sandboxUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    navigator.clipboard
+      .writeText(data.sandboxUrl)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch((error) => {
+        console.error("Failed to copy to clipboard:", error);
+      });
   };
 
   return (

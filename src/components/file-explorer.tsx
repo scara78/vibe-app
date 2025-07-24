@@ -67,16 +67,16 @@ const FileBreadcrumb = ({ filePath }: FileBreadcrumbProps) => {
         <>
           <BreadcrumbItem>
             <span className="text-muted-foreground">{firstSegment}</span>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbEllipsis />
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="font-medium">
-                {lastSegment}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbEllipsis />
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="font-medium">
+              {lastSegment}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </>
       );
@@ -98,7 +98,7 @@ export const FileExplorer = ({ files }: FileExplorerProps) => {
   const [copied, setCopied] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string | null>(() => {
     const fileKeys = Object.keys(files);
-    return fileKeys.length > 0 ? fileKeys[0] : null;
+    return fileKeys.length > 0 ? fileKeys[0] : null; // default preselect the first file
   });
 
   // convert files to tree structure
