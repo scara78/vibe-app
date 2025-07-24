@@ -20,6 +20,7 @@ export const MessagesContainer = ({
 }: Props) => {
   const trpc = useTRPC();
   const bottomRef = useRef<HTMLDivElement>(null);
+  const lastAssistantMessageIdRef = useRef<string | null>(null);
 
   // Prefetch the messages
   const { data: messages } = useSuspenseQuery(
@@ -32,17 +33,19 @@ export const MessagesContainer = ({
     )
   );
 
-  // TODO: This is causing problems
   // Search for the last message with the role "assistant" and set it as the active fragment
-  //useEffect(() => {
-  //  const lastAssistantMessageWithFragment = messages.findLast(
-  //    (message) => message.role === "ASSISTANT" && !!message.fragment
-  //  );
-
-  //  if (lastAssistantMessageWithFragment) {
-  //    setActiveFragment(lastAssistantMessageWithFragment.fragment);
-  //  }
-  //}, [messages, setActiveFragment]);
+  useEffect(() => {
+    const lastAssistantMessage = messages.findLast(
+      (message) => message.role === "ASSISTANT"
+    );
+    if (
+      lastAssistantMessage &&
+      lastAssistantMessage.id !== lastAssistantMessageIdRef.current
+    ) {
+      setActiveFragment(lastAssistantMessage.fragment);
+      lastAssistantMessageIdRef.current = lastAssistantMessage.id;
+    }
+  }, [messages, setActiveFragment]);
 
   // Scroll to the bottom of the messages when new messages are added
   useEffect(() => {
