@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import TextAreAutosize from "react-textarea-autosize";
+import TextAreaAutosize from "react-textarea-autosize";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -42,8 +42,11 @@ export const ProjectForm = () => {
         // TODO: Invalidate usage status
       },
       onError: (error) => {
-        // TODO: Redirect to pricing page if specific error
         toast.error(error.message);
+
+        if (error.data?.code === "UNAUTHORIZED") {
+          router.push("/sign-in");
+        }
       },
     })
   );
@@ -80,7 +83,7 @@ export const ProjectForm = () => {
             control={form.control}
             name="value"
             render={({ field }) => (
-              <TextAreAutosize
+              <TextAreaAutosize
                 {...field}
                 disabled={isPending}
                 onFocus={() => setIsFocus(true)}
@@ -102,7 +105,7 @@ export const ProjectForm = () => {
           <div className="flex gap-x-2 items-end justify-between pt-2">
             <div className="text-[10px] text-muted-foreground font-mono">
               <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-                <span>Ctrl or &#8984;</span>+ Enter
+                <span>&#8984;</span>Enter
               </kbd>
               &nbsp; to submit
             </div>
