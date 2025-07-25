@@ -3,7 +3,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import TextAreAutosize from "react-textarea-autosize";
+import TextAreaAutosize from "react-textarea-autosize";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -75,7 +75,7 @@ export const MessageForm = ({ projectId }: Props) => {
           control={form.control}
           name="value"
           render={({ field }) => (
-            <TextAreAutosize
+            <TextAreaAutosize
               {...field}
               disabled={isPending}
               onFocus={() => setIsFocus(true)}
