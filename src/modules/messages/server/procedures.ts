@@ -58,7 +58,10 @@ export const messagesRouter = createTRPCRouter({
       try {
         await consumeCredits();
       } catch (error) {
-        if (error instanceof Error) {
+        if (
+          error instanceof Error &&
+          error.message === "User is not authenticated"
+        ) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Something went wrong. Please try again.",

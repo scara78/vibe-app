@@ -19,6 +19,7 @@ import {
 
 import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "@/prompt";
 import { prisma } from "@/lib/db";
+import { SANDBOX_TIMEOUT } from "./types";
 
 interface AgentState {
   summary: string;
@@ -29,9 +30,10 @@ export const codeAgentFunction = inngest.createFunction(
   { id: "code-agent" },
   { event: "code-agent/run" },
   async ({ event, step }) => {
-    // Create a sandbox
+    // Create a sandbox id
     const sandboxId = await step.run("get-sandbox-id", async () => {
       const sandbox = await Sandbox.create("vibe-nextjs-ktz");
+      await sandbox.setTimeout(SANDBOX_TIMEOUT); // 30 minutes
       return sandbox.sandboxId;
     });
 
@@ -46,8 +48,9 @@ export const codeAgentFunction = inngest.createFunction(
             projectId: event.data.projectId,
           },
           orderBy: {
-            createdAt: "desc", // TODO: Change to "asc" if AI does not understand what is the latest message
+            createdAt: "desc",
           },
+          take: 5, // get the last 5 messages
         });
 
         // Format the messages
@@ -59,7 +62,7 @@ export const codeAgentFunction = inngest.createFunction(
           });
         }
 
-        return formattedMessages;
+        return formattedMessages.reverse();
       }
     );
 

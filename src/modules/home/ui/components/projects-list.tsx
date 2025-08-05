@@ -46,9 +46,11 @@ export const ProjectsList = () => {
                 <div className="flex flex-col">
                   <h3 className="truncate font-medium">{project.name}</h3>
                   <p className="text-sm text-muted-foreground">
-                    {formatDistanceToNow(project.updatedAt, {
-                      addSuffix: true,
-                    })}
+                    {project.updatedAt
+                      ? formatDistanceToNow(new Date(project.updatedAt), {
+                          addSuffix: true,
+                        })
+                      : "Recently created"}
                   </p>
                 </div>
               </div>

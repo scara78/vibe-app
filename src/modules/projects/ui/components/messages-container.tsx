@@ -27,17 +27,17 @@ export const MessagesContainer = ({
     trpc.messages.getMany.queryOptions(
       { projectId },
       {
-        // TODO: Temporary live message update
-        refetchInterval: 5000,
+        refetchInterval: 2000,
       }
     )
   );
 
   // Search for the last message with the role "assistant" and set it as the active fragment
   useEffect(() => {
-    const lastAssistantMessage = messages.findLast(
-      (message) => message.role === "ASSISTANT"
-    );
+    const lastAssistantMessage = messages
+      .slice()
+      .reverse()
+      .find((message) => message.role === "ASSISTANT");
     if (
       lastAssistantMessage &&
       lastAssistantMessage.id !== lastAssistantMessageIdRef.current
